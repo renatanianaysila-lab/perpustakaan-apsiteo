@@ -47,11 +47,9 @@ class AnggotaController extends Controller
             'status'       => 'required|in:aktif,nonaktif',
         ]);
 
-        // Buat id_pengguna otomatis
         $idPengguna = $this->generateIdPengguna();
 
         DB::transaction(function () use ($data, $idPengguna) {
-            // 1. Buat akun pengguna dengan role anggota
             Pengguna::create([
                 'id_pengguna'     => $idPengguna,
                 'nama_pengguna'   => $data['nama'],
@@ -63,7 +61,6 @@ class AnggotaController extends Controller
                 'status_pengguna' => $data['status'],
             ]);
 
-            // 2. Buat data keanggotaan
             Anggota::create([
                 'id_anggota'     => $data['id_anggota'],
                 'id_pengguna'    => $idPengguna,
@@ -73,8 +70,16 @@ class AnggotaController extends Controller
             ]);
         });
 
-        return redirect()->route('admin.anggota.index')
+        // Diarahkan ke halaman Kartu Anggota, bukan balik ke list
+        return redirect()->route('admin.anggota.kartu', ['anggota' => $data['id_anggota']])
             ->with('success', 'Anggota berhasil didaftarkan & Kartu Anggota Digital telah diterbitkan.');
+    }
+
+    // Menampilkan Kartu Anggota Digital
+    public function kartu(Anggota $anggota)
+    {
+        $anggota->load('pengguna');
+        return view('admin.anggota.kartu', compact('anggota'));
     }
 
     public function edit(Anggota $anggota)
@@ -128,7 +133,6 @@ class AnggotaController extends Controller
             ->with('success', 'Anggota berhasil dihapus.');
     }
 
-    // Generate id_pengguna otomatis: PG0001, PG0002, ...
     private function generateIdPengguna()
     {
         $last = Pengguna::where('id_pengguna', 'like', 'PG%')

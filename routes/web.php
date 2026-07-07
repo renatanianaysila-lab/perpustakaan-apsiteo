@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('anggota', AnggotaController::class)
             ->except(['show'])
             ->parameters(['anggota' => 'anggota']);
+        Route::get('/anggota/{anggota}/kartu', [AnggotaController::class, 'kartu'])->name('anggota.kartu');
 
         // transaksi
         Route::resource('peminjaman', PeminjamanController::class)->only(['index', 'create', 'store']);
