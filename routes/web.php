@@ -72,3 +72,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+Route::get('/run-migration', function () {
+    Artisan::call('migrate:fresh', ['--force' => true]);
+    return "Migrasi database berhasil dilakukan!";
+});
