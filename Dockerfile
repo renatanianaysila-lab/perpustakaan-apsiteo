@@ -21,6 +21,7 @@ RUN apk add --no-cache \
     nginx \
     supervisor \
     sqlite \
+    sqlite-dev \
     postgresql-client \
     postgresql-dev \
     libpng-dev \
