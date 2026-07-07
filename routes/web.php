@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BukuController;
@@ -56,10 +58,9 @@ Route::middleware('auth')->group(function () {
     // ================= AREA ANGGOTA =================
     Route::prefix('anggota-area')->name('anggota_area.')->group(function () {
         Route::get('/kartu', [KartuController::class, 'index'])->name('kartu');
-
         Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog');
-    Route::post('/katalog/{buku}/pinjam', [KatalogController::class, 'pinjam'])->name('katalog.pinjam');
-    Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat');
+        Route::post('/katalog/{buku}/pinjam', [KatalogController::class, 'pinjam'])->name('katalog.pinjam');
+        Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat');
     });
 
 });
@@ -73,7 +74,21 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Route Pemicu Migrasi Database Supabase
+|--------------------------------------------------------------------------
+*/
 Route::get('/run-migration', function () {
-    Artisan::call('migrate:fresh', ['--force' => true]);
-    return "Migrasi database berhasil dilakukan!";
+    try {
+        // Cek koneksi ke Supabase dulu
+        DB::connection()->getPdo();
+        
+        // Jalankan migrasi jika koneksi aman
+        Artisan::call('migrate:fresh', ['--force' => true]);
+        return "Koneksi sukses & migrasi database berhasil dilakukan!";
+    } catch (\Exception $e) {
+        // Tampilkan pesan error jika gagal
+        return "Gagal koneksi atau migrasi: " . $e->getMessage();
+    }
 });
