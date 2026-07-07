@@ -8,13 +8,13 @@ if [ ! -f "/var/www/html/.env" ]; then
 fi
 
 # Ensure APP_KEY is generated if not set
-if ! grep -q "APP_KEY=base64:" /var/www/html/.env; then
+if [ -z "$APP_KEY" ] && ! grep -q "APP_KEY=base64:" /var/www/html/.env; then
     echo "Generating Application Key..."
     php artisan key:generate --force
 fi
 
 # Initialize SQLite database if connection is sqlite
-DB_CONN=$(grep "^DB_CONNECTION=" /var/www/html/.env | cut -d '=' -f2)
+DB_CONN=${DB_CONNECTION:-$(grep "^DB_CONNECTION=" /var/www/html/.env | cut -d '=' -f2)}
 # Standard Laravel 11/12 database path is database/database.sqlite
 DB_PATH="/var/www/html/database/database.sqlite"
 if [ "$DB_CONN" = "sqlite" ] || [ -z "$DB_CONN" ]; then
