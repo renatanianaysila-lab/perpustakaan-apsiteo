@@ -10,6 +10,8 @@ RUN npm ci && npm run build
 FROM composer:2 AS composer-builder
 WORKDIR /app
 COPY composer.json composer.lock ./
+COPY app/ ./app/
+COPY database/ ./database/
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-plugins --no-scripts --ignore-platform-reqs
 
 # === Stage 3: Production Runtime ===
