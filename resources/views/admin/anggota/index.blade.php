@@ -96,6 +96,7 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-4">
+                                    
                                     <div class="flex items-center justify-center gap-3">
                                         <a href="{{ route('admin.anggota.edit', $item->id_anggota) }}" class="text-blue-600 hover:text-blue-800" title="Edit">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
