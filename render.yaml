@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: perpustakaan-app
+    env: docker
+    plan: free
+    numInstances: 1
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        sync: false # Generate locally using 'php artisan key:generate' and paste the value here
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        sync: false # Set database host from your PostgreSQL provider
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_DATABASE
+        sync: false # Set database name
+      - key: DB_USERNAME
+        sync: false # Set database username
+      - key: DB_PASSWORD
+        sync: false # Set database password
+      # Optional: if your database provider gives a full URL connection string (e.g. Supabase/Neon/Render PG)
+      # - key: DATABASE_URL
+      #   sync: false
