@@ -86,7 +86,8 @@ Route::get('/run-migration', function () {
         
         // Jalankan migrasi jika koneksi aman
         Artisan::call('migrate:fresh', ['--force' => true]);
-        return "Koneksi sukses & migrasi database berhasil dilakukan!";
+        Artisan::call('db:seed', ['--force' => true]);
+        return "Koneksi sukses, migrasi database & seeding berhasil dilakukan!";
     } catch (\Exception $e) {
         // Tampilkan pesan error jika gagal
         return "Gagal koneksi atau migrasi: " . $e->getMessage();
