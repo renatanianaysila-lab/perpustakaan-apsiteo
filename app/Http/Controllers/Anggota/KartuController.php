@@ -19,6 +19,6 @@ class KartuController extends Controller
             abort(403, 'Akun ini bukan anggota perpustakaan.');
         }
 
-        return view('anggota.kartu', compact('anggota'));
+        return view('admin.anggota.kartu', compact('anggota'));
     }
 }

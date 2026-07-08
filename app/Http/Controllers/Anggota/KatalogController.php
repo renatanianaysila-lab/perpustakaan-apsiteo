@@ -35,7 +35,7 @@ class KatalogController extends Controller
         $kategori = Kategori::orderBy('nama_kategori')->get();
         $totalBuku = Buku::count();
 
-        return view('anggota.katalog', compact('buku', 'kategori', 'keyword', 'kategoriId', 'totalBuku'));
+        return view('admin.anggota.katalog', compact('buku', 'kategori', 'keyword', 'kategoriId', 'totalBuku'));
     }
 
     public function pinjam(Request $request, Buku $buku)

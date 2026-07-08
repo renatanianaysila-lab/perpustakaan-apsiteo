@@ -34,7 +34,7 @@ class RiwayatController extends Controller
             ->where('status_bayar', 'belum')
             ->sum('total_denda');
 
-        return view('anggota.riwayat', compact(
+        return view('admin.anggota.riwayat', compact(
             'riwayat', 'totalDipinjam', 'sedangDipinjam', 'dendaBelumLunas'
         ));
     }
