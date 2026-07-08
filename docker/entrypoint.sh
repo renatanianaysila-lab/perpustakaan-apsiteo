@@ -35,6 +35,26 @@ chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /
 echo "Running migrations..."
 php artisan migrate --force
 
+# Automatically seed the database if it is empty
+echo "Checking if database needs seeding..."
+HAS_USERS=$(php -r "
+    require 'vendor/autoload.php';
+    \$app = require_once 'bootstrap/app.php';
+    \$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+    try {
+        echo App\Models\Pengguna::count();
+    } catch (\Exception \$e) {
+        echo 0;
+    }
+")
+
+if [ "$HAS_USERS" = "0" ] || [ -z "$HAS_USERS" ]; then
+    echo "Database is empty. Seeding default library data..."
+    php artisan db:seed --force
+else
+    echo "Database already has $HAS_USERS users. Skipping seed."
+fi
+
 # Optimize Laravel cache for production
 echo "Optimizing Laravel cache..."
 php artisan config:cache
