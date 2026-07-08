@@ -72,7 +72,7 @@ class LoginController extends Controller
     {
         return match ($role) {
             'admin'   => redirect()->route('admin.dashboard'),
-            'anggota' => redirect()->route('anggota.beranda'),
+            'anggota' => redirect()->route('anggota_area.katalog'),
             default   => redirect()->route('login'),
         };
     }
